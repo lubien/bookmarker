@@ -66,10 +66,10 @@ defmodule Bookmarker.CLI do
     Examples:
 
       bookmarker
-        # output into your stdout
+        # output into your stdout.
 
       bookmarker -i "Foo/Bar"
-        # ignore the folder named Bar inside Foo
+        # ignore the folder named Bar inside Foo.
 
       bookmarker -o "./fo.md"
         # save rendered markdown into a file named "fo.md" in your cwd.
