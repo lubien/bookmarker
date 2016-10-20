@@ -1,6 +1,8 @@
 # Bookmarker
 
-Convert your Google Chrome's bookmarks into markdown files
+[![Build Status](https://travis-ci.org/lubien/bookmarker.svg?branch=master)](https://travis-ci.org/lubien/bookmarker)
+
+> Convert your Google Chrome's bookmarks into markdown files
 
 ## Build
 
