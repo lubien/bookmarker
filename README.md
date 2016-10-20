@@ -35,3 +35,7 @@ Examples:
   bookmarker -o "./fo.md"
     # save rendered markdown into a file named "fo.md" in your cwd.
 ```
+
+## License
+
+[MIT](LICENSE.md)
