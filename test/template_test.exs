@@ -7,7 +7,8 @@ defmodule TemplateTest do
   @url "http://example.com"
 
   test "renders the template" do
-    assert render(%{"children" => []}, %{ title: "Foo", description: "Bar" }) ==
+    config = %{ title: "Foo", description: "Bar", timestamp?: false}
+    assert render(%{"children" => []}, config) ==
       """
       # Foo
 
@@ -27,15 +28,15 @@ defmodule TemplateTest do
           "url" => @url
         }
       ]
-    }, %{ title: "Foo", description: "Bar" }) ==
+    }, config) ==
       """
       # Foo
 
       > Bar
 
       * [A](#{@url})
-      * [B](#{@url})
 
+      * [B](#{@url})
       """
 
     assert render(%{
@@ -55,7 +56,7 @@ defmodule TemplateTest do
           "url" => @url
         }
       ]
-    }, %{ title: "Foo", description: "Bar" }) ==
+    }, config) ==
       """
       # Foo
 
@@ -66,7 +67,6 @@ defmodule TemplateTest do
       * [C](#{@url})
 
       * [B](#{@url})
-
       """
   end
 
