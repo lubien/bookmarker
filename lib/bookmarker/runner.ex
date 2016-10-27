@@ -5,7 +5,7 @@ defmodule Bookmarker.Runner do
   def run(config) do
     get_bookmarks(config.file)
     |> ignore_paths(config.ignore)
-    |> render_markdown(Map.take(config, [:title, :description, :timestamp]))
+    |> render_markdown(Map.take(config, [:title, :description, :timestamp?]))
     |> output(config.output)
   end
 
