@@ -19,7 +19,7 @@ mix #=> aliased mix.escript_build
 Usage: bookmarker [options]
 
   -f, --file            Set where your chrome bookmarks file is.
-			Default: ~/.config/google-chrome/Default/Bookemarks
+			Default: ~/.config/google-chrome/Default/Bookmarks
   -t, --title           Set a title for the rendered markdown.
 			Default: Google Chrome Bookmarks
   -d, --description     Set a description for the rendered markdown.
