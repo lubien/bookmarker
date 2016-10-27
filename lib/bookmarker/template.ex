@@ -24,19 +24,19 @@ defmodule Bookmarker.Template do
   defp render_bookmarks([], _level), do: ""
   defp render_bookmarks(bookmarks, level) do
     bookmarks
-    |> Enum.reduce("", fn
+    |> Enum.reduce([], fn
         %{ "type" => "folder" } = bookmark, acc ->
-          acc <> """
-          #{render_header bookmark["name"], level}
-
-          #{render_bookmarks(Map.get(bookmark, "children", []), level + 1)}
-          """
+          Enum.concat(acc, [
+            bookmark["name"] |> render_header(level),
+            bookmark |> Map.get("children", []) |> render_bookmarks(level + 1)
+          ])
 
         bookmark, acc ->
-          acc <> """
-          * [#{bookmark["name"]}](#{bookmark["url"]})
-          """
+          Enum.concat(acc, [
+            "* [#{bookmark["name"]}](#{bookmark["url"]})"
+          ])
     end)
+    |> Enum.join("\n\n")
   end
 
   def render_header(title, level)
