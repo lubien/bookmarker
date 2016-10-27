@@ -5,6 +5,14 @@ defmodule Bookmarker.Template do
 
     > #{config.description}
 
+    #{if config.timestamp do
+      {{year, month, day}, {hour, minute, _}} = :calendar.universal_time
+
+      "> At #{month}/#{day}/#{year} #{hour}:#{minute}"
+    else
+      ""
+    end}
+
     #{render_bookmarks Map.get(bookmarks, "children", [])}
     """
   end
