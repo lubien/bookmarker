@@ -86,6 +86,6 @@ defmodule Bookmarker.CLI do
   end
 
   defp process(config) do
-    Runner.run(config)
+    Runner.run config
   end
 end

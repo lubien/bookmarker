@@ -20,19 +20,19 @@ defmodule Bookmarker.Runner do
 
   def ignore_paths(bookmarks, paths) do
     paths
-      |> Enum.reduce(bookmarks, fn path, acc ->
-        Bookmark.drop_at(acc, String.split(path, "/"))
-      end)
+    |> Enum.reduce(bookmarks, fn path, acc ->
+      Bookmark.drop_at acc, String.split(path, "/")
+    end)
   end
 
   def render_markdown(bookmarks, config) do
-    Template.render(bookmarks, config)
+    Template.render bookmarks, config
   end
 
   def output(rendered, path)
   when is_binary(path) do
-    dest = path |> Path.expand
-    dest |> File.write!(rendered)
+    dest = Path.expand path
+    File.write! dest, rendered
     IO.puts "Saved output at #{dest}"
   end
   def output(rendered, _target) do

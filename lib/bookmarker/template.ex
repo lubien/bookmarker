@@ -4,7 +4,7 @@ defmodule Bookmarker.Template do
     # #{config.title}
 
     > #{config.description}
-    #{maybe_render_timestamp(config.timestamp?)}
+    #{maybe_render_timestamp config.timestamp?}
     #{render_bookmarks Map.get(bookmarks, "children", [])}
     """
   end
