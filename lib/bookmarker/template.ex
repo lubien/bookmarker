@@ -29,14 +29,14 @@ defmodule Bookmarker.Template do
   defp render_bookmarks(bookmarks, level) do
     bookmarks
     |> Stream.flat_map(fn
-        %{ "type" => "folder" } = bookmark ->
+        %{ "type" => "folder", "name" => name, "children" => children  } ->
           [
-            bookmark["name"] |> render_header(level),
-            Map.get(bookmark, "children", []) |> render_bookmarks(level + 1)
+            render_header(name, level),
+            render_bookmarks(children, level + 1)
           ]
 
-        bookmark ->
-          ["* [#{bookmark["name"]}](#{bookmark["url"]})"]
+        %{ "name" => name, "url" => url } ->
+          ["* [#{name}](#{url})"]
     end)
     |> Enum.join("\n\n")
   end
