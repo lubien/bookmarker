@@ -28,17 +28,15 @@ defmodule Bookmarker.Template do
   defp render_bookmarks([], _level), do: ""
   defp render_bookmarks(bookmarks, level) do
     bookmarks
-    |> Enum.reduce([], fn
-        %{ "type" => "folder" } = bookmark, acc ->
-          Enum.concat(acc, [
+    |> Stream.flat_map(fn
+        %{ "type" => "folder" } = bookmark ->
+          [
             bookmark["name"] |> render_header(level),
-            bookmark |> Map.get("children", []) |> render_bookmarks(level + 1)
-          ])
+            Map.get(bookmark, "children", []) |> render_bookmarks(level + 1)
+          ]
 
-        bookmark, acc ->
-          Enum.concat(acc, [
-            "* [#{bookmark["name"]}](#{bookmark["url"]})"
-          ])
+        bookmark ->
+          ["* [#{bookmark["name"]}](#{bookmark["url"]})"]
     end)
     |> Enum.join("\n\n")
   end
