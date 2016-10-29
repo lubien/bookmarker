@@ -9,16 +9,13 @@ defmodule Bookmarker.Template do
     """
   end
 
-  def maybe_render_timestamp(timestamp?) do
-    if timestamp? do
-      {{year, month, day}, {hour, minute, _}} = :calendar.universal_time
+  def maybe_render_timestamp(false), do: ""
+  def maybe_render_timestamp(_timestamp?) do
+    {{year, month, day}, {hour, minute, _}} = :calendar.universal_time
 
-      """
-      > At #{month}/#{day}/#{year} #{hour}:#{minute}
-      """
-    else
-      ""
-    end
+    """
+    > At #{month}/#{day}/#{year} #{hour}:#{minute}
+    """
   end
 
   def render_bookmarks(bookmarks) do
