@@ -53,7 +53,7 @@ defmodule Bookmarker.CLI do
           ignore:
             Keyword.get_values(params, :ignore),
           path:
-            Keyword.get_values(params, :path),
+            Keyword.get(params, :path),
           output:
             Keyword.get(params, :output, :stdio),
         }

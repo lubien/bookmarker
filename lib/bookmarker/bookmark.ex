@@ -18,8 +18,8 @@ defmodule Bookmarker.Bookmark do
       end)
     end)
   end
-  def get_at(bookmarks, []), do: bookmarks
-  def get_at(bookmarks, [dir | []]) do
+  def get_at(bookmarks, nil), do: bookmarks
+  def get_at(bookmarks, dir) do
     bookmarks
     |> Map.update("children", [], fn children ->
       Enum.filter children, fn child -> child["name"] == dir end
