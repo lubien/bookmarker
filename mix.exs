@@ -3,7 +3,7 @@ defmodule Bookmarker.Mixfile do
 
   def project do
     [app: :bookmarker,
-     escript: escript_config,
+     escript: escript_config(),
      default_task: "escript.build",
      version: "1.0.0",
      elixir: "~> 1.3",
