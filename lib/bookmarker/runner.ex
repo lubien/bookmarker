@@ -5,6 +5,7 @@ defmodule Bookmarker.Runner do
   def run(config) do
     get_bookmarks(config.file)
     |> ignore_paths(config.ignore)
+    |> restrict_to(config.path)
     |> render_markdown(Map.take(config, [:title, :description, :timestamp?]))
     |> output(config.output)
   end
@@ -23,6 +24,10 @@ defmodule Bookmarker.Runner do
     |> Enum.reduce(bookmarks, fn path, acc ->
       Bookmark.drop_at acc, String.split(path, "/")
     end)
+  end
+
+  def restrict_to(bookmarks, path) do
+      Bookmark.get_at bookmarks, path
   end
 
   def render_markdown(bookmarks, config) do
