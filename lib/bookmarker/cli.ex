@@ -9,6 +9,7 @@ defmodule Bookmarker.CLI do
       description: :string,
       timestamp: :boolean,
       ignore: :keep,
+      path: :string,
       output: :string,
     ],
     aliases: [
@@ -17,6 +18,7 @@ defmodule Bookmarker.CLI do
       t: :title,
       d: :description,
       i: :ignore,
+      p: :path,
       o: :output,
     ]
   ]
@@ -50,6 +52,8 @@ defmodule Bookmarker.CLI do
             Keyword.get(params, :timestamp, true),
           ignore:
             Keyword.get_values(params, :ignore),
+          path:
+            Keyword.get(params, :path),
           output:
             Keyword.get(params, :output, :stdio),
         }
@@ -69,6 +73,7 @@ defmodule Bookmarker.CLI do
       --no-timestamp        Prevent appending of build datetime after description.
                             Default: use timestamp
       -i, --ignore          Ignore folders. You may set this multiple times.
+      -p, --path            Restrict to folder. You may set this one time only.
       -o, --output          Save rendered markdown to a file.
                             Default: none (output to stdin)
 
