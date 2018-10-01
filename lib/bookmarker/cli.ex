@@ -43,7 +43,15 @@ defmodule Bookmarker.CLI do
       _ ->
         %{
           file:
-            Keyword.get(params, :file, Application.get_env(:bookmarker, :bookmarks_file)),
+            Keyword.get(params, :file, 
+            case :os.type() do
+              {:unix, :darwin} -> 
+                Application.get_env(:bookmarker, :osx_bookmarks_file)
+              {:unix, _} -> 
+                Application.get_env(:bookmarker, :linux_bookmarks_file)
+              {:win32, _} -> 
+                Application.get_env(:bookmarker, :windows_bookmarks_file)
+              end),
           title:
             Keyword.get(params, :title, Application.get_env(:bookmarker, :default_title)),
           description:
