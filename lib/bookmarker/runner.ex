@@ -12,7 +12,7 @@ defmodule Bookmarker.Runner do
   end
 
   defp order_bookmarks(bookmarks) do
-    if bookmarks.order do
+    if bookmarks.sort do
       Enum.sort_by(bookmarks, fn(b) -> b.title end)
     else
       bookmarks
