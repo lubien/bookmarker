@@ -11,7 +11,7 @@ defmodule Bookmarker.Template do
 
   def maybe_render_timestamp(false), do: ""
   def maybe_render_timestamp(_timestamp?) do
-    {{year, month, day}, {hour, minute, _}} = :calendar.universal_time
+    {{year, month, day}, {hour, minute, _}} = :calendar.local_time
     timestamp = render_timestamp(hour, minute)
 
     """
