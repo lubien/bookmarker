@@ -31,6 +31,7 @@ Usage: bookmarker [options]
   --no-timestamp        Prevent appending of build datetime after description.
 			Default: use timestamp
   -i, --ignore          Ignore folders. You may set this multiple times.
+  -p, --path            Restrict to folder. You may set this one time only.
   -o, --output          Save rendered markdown to a file.
 			Default: none (output to stdin)
 
