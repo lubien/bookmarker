@@ -4,6 +4,10 @@
 
 > Convert your Google Chrome's bookmarks into markdown files
 
+## Installation
+
+`mix escript.install github lubien/bookmarker`
+
 ## Build
 
 Enter the cloned repo folder then:
