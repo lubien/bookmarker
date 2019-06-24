@@ -1,13 +1,17 @@
 defmodule Bookmarker.Runner do
-  alias Bookmarker.Bookmark
-  alias Bookmarker.Template
+  alias Bookmarker.{Bookmark, Template}
 
   def run(config) do
     get_bookmarks(config.file)
     |> ignore_paths(config.ignore)
     |> restrict_to(config.path)
+    |> order_bookmarks
     |> render_markdown(Map.take(config, [:title, :description, :timestamp?]))
     |> output(config.output)
+  end
+
+  defp order_bookmarks(bookmarks) do
+    if bookmarks.sort, do: Enum.sort_by(bookmarks, &(&1.title)), else: bookmarks
   end
 
   def get_bookmarks(file) do
@@ -56,7 +60,6 @@ defmodule Bookmarker.Runner do
     File.write!(dest, rendered)
     IO.puts("Saved output at #{dest}")
   end
-
   def output(rendered, _target) do
     IO.puts(rendered)
   end

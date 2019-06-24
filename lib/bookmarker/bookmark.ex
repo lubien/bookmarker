@@ -18,6 +18,7 @@ defmodule Bookmarker.Bookmark do
       end)
     end)
   end
+
   def get_at(bookmarks, nil), do: bookmarks
   def get_at(bookmarks, dir) do
     bookmarks
