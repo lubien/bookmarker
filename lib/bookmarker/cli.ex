@@ -38,6 +38,18 @@ defmodule Bookmarker.CLI do
     |> elem(0)
   end
 
+  @spec build_config(keyword) ::
+          :help
+          | %{
+              description: any,
+              file: any,
+              ignore: [any],
+              output: any,
+              path: any,
+              sort: any,
+              timestamp?: any,
+              title: any
+            }
   def build_config(params) do
     case params do
       [ help: true ] ->
@@ -45,13 +57,13 @@ defmodule Bookmarker.CLI do
       _ ->
         %{
           file:
-            Keyword.get(params, :file, 
+            Keyword.get(params, :file,
             case :os.type() do
-              {:unix, :darwin} -> 
+              {:unix, :darwin} ->
                 Application.get_env(:bookmarker, :osx_bookmarks_file)
-              {:unix, _} -> 
+              {:unix, _} ->
                 Application.get_env(:bookmarker, :linux_bookmarks_file)
-              {:win32, _} -> 
+              {:win32, _} ->
                 Application.get_env(:bookmarker, :windows_bookmarks_file)
             end),
           title:
