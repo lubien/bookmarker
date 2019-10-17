@@ -41,18 +41,6 @@ defmodule Bookmarker.CLI do
     |> elem(0)
   end
 
-  @spec build_config(keyword) ::
-          :help
-          | %{
-              description: any,
-              file: any,
-              ignore: [any],
-              output: any,
-              path: any,
-              sort: any,
-              timestamp?: any,
-              title: any
-            }
   def build_config(params) do
     case params do
       [ help: true ] ->

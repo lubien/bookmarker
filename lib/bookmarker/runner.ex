@@ -54,13 +54,6 @@ defmodule Bookmarker.Runner do
     )
   end
 
-  @spec get_bookmarks(
-          binary
-          | maybe_improper_list(
-              binary | maybe_improper_list(any, binary | []) | char,
-              binary | []
-            )
-        ) :: %{optional(<<_::64>>) => [any]}
   def get_bookmarks(file) do
     file
     |> Path.expand()
@@ -86,7 +79,6 @@ defmodule Bookmarker.Runner do
     }
   end
 
-  @spec ignore_paths(any, any) :: any
   def ignore_paths(bookmarks, paths) do
     paths
     |> Enum.reduce(bookmarks, fn path, acc ->
@@ -94,7 +86,6 @@ defmodule Bookmarker.Runner do
     end)
   end
 
-  @spec restrict_to(any, any) :: any
   def restrict_to(bookmarks, path) do
     Bookmark.get_at(bookmarks, path)
   end
