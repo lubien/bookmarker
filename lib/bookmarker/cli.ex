@@ -1,6 +1,5 @@
 defmodule Bookmarker.CLI do
   alias Bookmarker.Runner
-  require IEx
 
   @option_parser_opts [
     strict: [
