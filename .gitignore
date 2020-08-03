@@ -18,3 +18,5 @@ erl_crash.dump
 
 # Built script
 /bookmarker
+
+.elixir_ls
