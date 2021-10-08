@@ -83,12 +83,13 @@ defmodule Bookmarker.CLI do
   defp validate_config(:help), do: :help
 
   defp validate_config(config) do
-    cond do
-      [nil | Runner.valid_sort_strategies()] |> Enum.find_index(&(&1 == config.sortby)) == nil ->
-        {:error, "Invalid option for the switch --sortby"}
+    sort_strategies =
+      [nil | Runner.valid_sort_strategies()] |> Enum.find_index(&(&1 == config.sortby))
 
-      true ->
-        config
+    if sort_strategies == nil do
+      {:error, "Invalid option for the switch --sortby"}
+    else
+      config
     end
   end
 
