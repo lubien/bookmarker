@@ -19,7 +19,10 @@ defmodule Bookmarker.Mixfile do
   end
 
   defp deps do
-    [{:poison, "~> 4.0"}]
+    [
+      {:poison, "~> 4.0"},
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
+    ]
   end
 
   defp escript_config do
