@@ -8,16 +8,10 @@ defmodule Bookmarker.Bookmark do
     end)
   end
 
-  def drop_at(bookmarks, [dir | tail]) do
+  def drop_at(bookmarks, directories) do
     bookmarks
     |> Map.update("children", [], fn children ->
-      Enum.map(children, fn child ->
-        if child["name"] == dir do
-          drop_at(child, tail)
-        else
-          child
-        end
-      end)
+      drop_child(children, directories)
     end)
   end
 
@@ -27,6 +21,16 @@ defmodule Bookmarker.Bookmark do
     bookmarks
     |> Map.update("children", [], fn children ->
       Enum.filter(children, fn child -> child["name"] == dir end)
+    end)
+  end
+
+  defp drop_child(children, [dir | tail]) do
+    Enum.map(children, fn child ->
+      if child["name"] == dir do
+        drop_at(child, tail)
+      else
+        child
+      end
     end)
   end
 end
