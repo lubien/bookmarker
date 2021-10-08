@@ -5,7 +5,7 @@
 This project is used to parse your Chrome bookmarker file into a human readable format 
 so you can see it anywhere :)
 
-Made with Elixir <3
+Made with Elixir 💜
 
 > Convert your Google Chrome's bookmarks into markdown files
 
