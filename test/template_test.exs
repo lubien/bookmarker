@@ -1,73 +1,79 @@
 defmodule TemplateTest do
   use ExUnit.Case
 
-  import Bookmarker.Template, only: [ render: 2,
-                                      render_header: 2 ]
+  import Bookmarker.Template, only: [render: 2, render_header: 2]
 
   @url "http://example.com"
 
   test "renders the template" do
-    config = %{ title: "Foo", description: "Bar", timestamp?: false}
+    config = %{title: "Foo", description: "Bar", timestamp?: false}
+
     assert render(%{"children" => []}, config) ==
-      """
-      # Foo
+             """
+             # Foo
 
-      > Bar
+             > Bar
 
 
-      """
+             """
 
-    assert render(%{
-      "children" => [
-        %{
-          "name" => "A",
-          "url" => @url
-        },
-        %{
-          "name" => "B",
-          "url" => @url
-        }
-      ]
-    }, config) ==
-      """
-      # Foo
+    assert render(
+             %{
+               "children" => [
+                 %{
+                   "name" => "A",
+                   "url" => @url
+                 },
+                 %{
+                   "name" => "B",
+                   "url" => @url
+                 }
+               ]
+             },
+             config
+           ) ==
+             """
+             # Foo
 
-      > Bar
+             > Bar
 
-      * [A](#{@url})
+             * [A](#{@url})
 
-      * [B](#{@url})
-      """
+             * [B](#{@url})
+             """
 
-    assert render(%{
-      "children" => [
-        %{
-          "name" => "A",
-          "type" => "folder",
-          "children" => [
-            %{
-              "name" => "C",
-              "url" => @url
-            }
-          ]
-        },
-        %{
-          "name" => "B",
-          "url" => @url
-        }
-      ]
-    }, config) ==
-      """
-      # Foo
+    assert render(
+             %{
+               "children" => [
+                 %{
+                   "name" => "A",
+                   "type" => "folder",
+                   "children" => [
+                     %{
+                       "name" => "C",
+                       "url" => @url
+                     }
+                   ]
+                 },
+                 %{
+                   "name" => "B",
+                   "url" => @url
+                 }
+               ]
+             },
+             config
+           ) ==
+             """
+             # Foo
 
-      > Bar
+             > Bar
 
-      ## A
+             ## A
 
-      * [C](#{@url})
+             * [C](#{@url})
 
-      * [B](#{@url})
-      """
+             * [B](#{@url})
+             """
   end
 
   test "rendering headers" do
