@@ -1,7 +1,7 @@
 defmodule BookmarkTest do
   use ExUnit.Case
 
-  import Bookmarker.Bookmark, only: [ drop_at: 2 ]
+  import Bookmarker.Bookmark, only: [drop_at: 2]
 
   @fixture %{
     "name" => "Other bookmarks",
@@ -13,7 +13,7 @@ defmodule BookmarkTest do
             "name" => "B",
             "children" => [
               %{
-                "name" => "C",
+                "name" => "C"
               }
             ]
           }
@@ -24,16 +24,18 @@ defmodule BookmarkTest do
 
   test "can filter folders" do
     assert drop_at(@fixture, ["A"]) == %{
-      "name" => "Other bookmarks",
-      "children" => []
-    }
+             "name" => "Other bookmarks",
+             "children" => []
+           }
 
     assert drop_at(@fixture, ["A", "B"]) == %{
-      "name" => "Other bookmarks",
-      "children" => [%{
-        "name" => "A",
-        "children" => [],
-      }]
-    }
+             "name" => "Other bookmarks",
+             "children" => [
+               %{
+                 "name" => "A",
+                 "children" => []
+               }
+             ]
+           }
   end
 end

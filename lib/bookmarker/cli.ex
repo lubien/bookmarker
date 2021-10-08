@@ -12,7 +12,7 @@ defmodule Bookmarker.CLI do
       timestamp: :boolean,
       ignore: :keep,
       path: :string,
-      output: :string,
+      output: :string
     ],
     aliases: [
       h: :help,
@@ -23,7 +23,7 @@ defmodule Bookmarker.CLI do
       d: :description,
       i: :ignore,
       p: :path,
-      o: :output,
+      o: :output
     ]
   ]
 
@@ -43,52 +43,57 @@ defmodule Bookmarker.CLI do
 
   def build_config(params) do
     case params do
-      [ help: true ] ->
+      [help: true] ->
         :help
+
       _ ->
         %{
           file:
-            Keyword.get(params, :file,
-            case :os.type() do
-              {:unix, :darwin} ->
-                Application.get_env(:bookmarker, :osx_bookmarks_file)
-              {:unix, _} ->
-                Application.get_env(:bookmarker, :linux_bookmarks_file)
-              {:win32, _} ->
-                Application.get_env(:bookmarker, :windows_bookmarks_file)
-            end),
-          title:
-            Keyword.get(params, :title, Application.get_env(:bookmarker, :default_title)),
+            Keyword.get(
+              params,
+              :file,
+              case :os.type() do
+                {:unix, :darwin} ->
+                  Application.get_env(:bookmarker, :osx_bookmarks_file)
+
+                {:unix, _} ->
+                  Application.get_env(:bookmarker, :linux_bookmarks_file)
+
+                {:win32, _} ->
+                  Application.get_env(:bookmarker, :windows_bookmarks_file)
+              end
+            ),
+          title: Keyword.get(params, :title, Application.get_env(:bookmarker, :default_title)),
           description:
-            Keyword.get(params, :description, Application.get_env(:bookmarker, :default_description)),
-          timestamp?:
-            Keyword.get(params, :timestamp, true),
-          ignore:
-            Keyword.get_values(params, :ignore),
-          path:
-            Keyword.get(params, :path),
-          output:
-            Keyword.get(params, :output, :stdio),
-          sort:
-            Keyword.get(params, :sort, false),
-          sortby:
-            Keyword.get(params, :sortby, nil),
+            Keyword.get(
+              params,
+              :description,
+              Application.get_env(:bookmarker, :default_description)
+            ),
+          timestamp?: Keyword.get(params, :timestamp, true),
+          ignore: Keyword.get_values(params, :ignore),
+          path: Keyword.get(params, :path),
+          output: Keyword.get(params, :output, :stdio),
+          sort: Keyword.get(params, :sort, false),
+          sortby: Keyword.get(params, :sortby, nil)
         }
     end
   end
+
   defp validate_config(:help), do: :help
+
   defp validate_config(config) do
     cond do
-          [ nil | Runner.valid_sort_strategies]|> Enum.find_index(&( &1 == config.sortby )) == nil ->
-            {:error, "Invalid option for the switch --sortby"}
+      [nil | Runner.valid_sort_strategies()] |> Enum.find_index(&(&1 == config.sortby)) == nil ->
+        {:error, "Invalid option for the switch --sortby"}
 
-          true -> config
+      true ->
+        config
     end
-
   end
 
   defp process(:help) do
-    IO.puts """
+    IO.puts("""
     Usage: bookmarker [options]
 
       -f, --file            Set where your chrome bookmarks file is.
@@ -100,7 +105,7 @@ defmodule Bookmarker.CLI do
       -s, --sort            Set if the list is sorted.
                             Default: false
       -sb --sortby          Set to specify sorting strategy.
-                            Valid startegies are [#{Runner.valid_sort_strategies|> Enum.join(", ")}]
+                            Valid startegies are [#{Runner.valid_sort_strategies() |> Enum.join(", ")}]
       --no-timestamp        Prevent appending of build datetime after description.
                             Default: use timestamp
       -i, --ignore          Ignore folders. You may set this multiple times.
@@ -118,15 +123,15 @@ defmodule Bookmarker.CLI do
 
       bookmarker -o "./foo.md"
         # save rendered markdown into a file named "foo.md" in your cwd.
-    """
+    """)
   end
 
   defp process({:error, msg}) do
-    IO.puts "#{msg}\n\n"
+    IO.puts("#{msg}\n\n")
     process(:help)
   end
 
   defp process(config) do
-    Runner.run config
+    Runner.run(config)
   end
 end
