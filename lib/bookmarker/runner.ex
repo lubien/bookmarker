@@ -9,7 +9,9 @@ defmodule Bookmarker.Runner do
     |> ignore_paths(config.ignore)
     |> restrict_to(config.path)
     |> sort_bookmarks(config.sort, config.sortby)
-    |> render_markdown(Map.take(config, [:title, :description, :timestamp?]))
+    |> render_markdown(
+      Map.take(config, [:title, :description, :timestamp?, :double_space?, :strip_html?])
+    )
     |> output(config.output)
   end
 

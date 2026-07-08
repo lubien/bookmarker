@@ -1,11 +1,16 @@
 defmodule Bookmarker.Template do
+  @html_tag_regex ~r/(<.*>)/
+
   def render(bookmarks, config) do
+    separator = if Map.get(config, :double_space?, false), do: "\n\n", else: "\n"
+    strip_html? = Map.get(config, :strip_html?, false)
+
     """
     # #{config.title}
 
     > #{config.description}
     #{maybe_render_timestamp(config.timestamp?)}
-    #{render_bookmarks(Map.get(bookmarks, "children", []))}
+    #{render_bookmarks(Map.get(bookmarks, "children", []), separator, strip_html?)}
     """
   end
 
@@ -34,28 +39,36 @@ defmodule Bookmarker.Template do
     "#{hour_with_padding}:#{minute_with_padding}"
   end
 
-  def render_bookmarks(bookmarks) do
-    render_bookmarks(bookmarks, 2)
+  def render_bookmarks(bookmarks, separator \\ "\n", strip_html? \\ false) do
+    render_bookmarks(bookmarks, 2, separator, strip_html?)
   end
 
-  defp render_bookmarks([], _level), do: ""
+  defp render_bookmarks([], _level, _separator, _strip_html?), do: ""
 
-  defp render_bookmarks(bookmarks, level) do
+  defp render_bookmarks(bookmarks, level, separator, strip_html?) do
     bookmarks
-    |> Stream.flat_map(&render_bookmark(&1, level))
-    |> Enum.join("\n\n")
+    |> Stream.flat_map(&render_bookmark(&1, level, separator, strip_html?))
+    |> Enum.join(separator)
   end
 
-  def render_bookmark(%{"type" => "folder", "name" => name, "children" => children}, level) do
+  def render_bookmark(
+        %{"type" => "folder", "name" => name, "children" => children},
+        level,
+        separator,
+        strip_html?
+      ) do
     [
-      render_header(name, level),
-      render_bookmarks(children, level + 1)
+      render_header(maybe_strip_html(name, strip_html?), level),
+      render_bookmarks(children, level + 1, separator, strip_html?)
     ]
   end
 
-  def render_bookmark(%{"name" => name, "url" => url}, _level) do
-    ["* [#{name}](#{url})"]
+  def render_bookmark(%{"name" => name, "url" => url}, _level, _separator, strip_html?) do
+    ["* [#{maybe_strip_html(name, strip_html?)}](#{url})"]
   end
+
+  defp maybe_strip_html(name, false), do: name
+  defp maybe_strip_html(name, true), do: Regex.replace(@html_tag_regex, name, "(\\1)")
 
   def render_header(title, level)
       when level < 6 do

@@ -38,7 +38,6 @@ defmodule TemplateTest do
              > Bar
 
              * [A](#{@url})
-
              * [B](#{@url})
              """
 
@@ -69,10 +68,58 @@ defmodule TemplateTest do
              > Bar
 
              ## A
-
              * [C](#{@url})
+             * [B](#{@url})
+             """
+  end
+
+  test "renders double-spaced when double_space? is true" do
+    config = %{title: "Foo", description: "Bar", timestamp?: false, double_space?: true}
+
+    assert render(
+             %{
+               "children" => [
+                 %{"name" => "A", "url" => @url},
+                 %{"name" => "B", "url" => @url}
+               ]
+             },
+             config
+           ) ==
+             """
+             # Foo
+
+             > Bar
+
+             * [A](#{@url})
 
              * [B](#{@url})
+             """
+  end
+
+  test "wraps HTML tags in parens when strip_html? is true" do
+    config = %{title: "Foo", description: "Bar", timestamp?: false, strip_html?: true}
+
+    assert render(
+             %{
+               "children" => [
+                 %{"name" => "A <b>bold</b>", "url" => @url},
+                 %{
+                   "name" => "<i>Folder</i>",
+                   "type" => "folder",
+                   "children" => [%{"name" => "C", "url" => @url}]
+                 }
+               ]
+             },
+             config
+           ) ==
+             """
+             # Foo
+
+             > Bar
+
+             * [A (<b>bold</b>)](#{@url})
+             ## (<i>Folder</i>)
+             * [C](#{@url})
              """
   end
 
