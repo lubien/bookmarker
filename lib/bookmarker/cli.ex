@@ -117,8 +117,9 @@ defmodule Bookmarker.CLI do
                             Default: use timestamp
       -D, --double-space    Put a blank line between each bookmark/heading.
                             Default: single-spaced
-      -H, --strip-html      Wrap any HTML tags found in bookmark/folder names in
-                            parens instead of rendering them raw.
+      -H, --strip-html      Replace HTML tags in bookmark/folder names with parens
+                            (e.g. "<b>text</b>" becomes "(text)") so raw tags don't
+                            break rendering in tools like Obsidian.
                             Default: false
       -i, --ignore          Ignore folders. You may set this multiple times.
       -p, --path            Restrict to folder. You may set this one time only.

@@ -96,7 +96,7 @@ defmodule TemplateTest do
              """
   end
 
-  test "wraps HTML tags in parens when strip_html? is true" do
+  test "replaces HTML tags with parens when strip_html? is true" do
     config = %{title: "Foo", description: "Bar", timestamp?: false, strip_html?: true}
 
     assert render(
@@ -106,7 +106,10 @@ defmodule TemplateTest do
                  %{
                    "name" => "<i>Folder</i>",
                    "type" => "folder",
-                   "children" => [%{"name" => "C", "url" => @url}]
+                   "children" => [
+                     %{"name" => "<b><i>C</i></b>", "url" => @url},
+                     %{"name" => "Line<br/>Break", "url" => @url}
+                   ]
                  }
                ]
              },
@@ -117,9 +120,10 @@ defmodule TemplateTest do
 
              > Bar
 
-             * [A (<b>bold</b>)](#{@url})
-             ## (<i>Folder</i>)
-             * [C](#{@url})
+             * [A (bold)](#{@url})
+             ## (Folder)
+             * [((C))](#{@url})
+             * [LineBreak](#{@url})
              """
   end
 

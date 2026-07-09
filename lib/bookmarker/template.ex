@@ -1,5 +1,7 @@
 defmodule Bookmarker.Template do
-  @html_tag_regex ~r/(<.*>)/
+  @self_closing_tag_regex ~r/<[^>]*\/>/
+  @opening_tag_regex ~r/<[^\/][^>]*>/
+  @closing_tag_regex ~r/<\/[^>]*>/
 
   def render(bookmarks, config) do
     separator = if Map.get(config, :double_space?, false), do: "\n\n", else: "\n"
@@ -68,7 +70,13 @@ defmodule Bookmarker.Template do
   end
 
   defp maybe_strip_html(name, false), do: name
-  defp maybe_strip_html(name, true), do: Regex.replace(@html_tag_regex, name, "(\\1)")
+
+  defp maybe_strip_html(name, true) do
+    name
+    |> String.replace(@self_closing_tag_regex, "")
+    |> String.replace(@closing_tag_regex, ")")
+    |> String.replace(@opening_tag_regex, "(")
+  end
 
   def render_header(title, level)
       when level < 6 do
