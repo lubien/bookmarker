@@ -10,6 +10,8 @@ defmodule Bookmarker.CLI do
       sortby: :string,
       description: :string,
       timestamp: :boolean,
+      double_space: :boolean,
+      strip_html: :boolean,
       ignore: :keep,
       path: :string,
       output: :string
@@ -21,6 +23,8 @@ defmodule Bookmarker.CLI do
       s: :sort,
       S: :sortby,
       d: :description,
+      D: :double_space,
+      H: :strip_html,
       i: :ignore,
       p: :path,
       o: :output
@@ -71,6 +75,8 @@ defmodule Bookmarker.CLI do
               Application.get_env(:bookmarker, :default_description)
             ),
           timestamp?: Keyword.get(params, :timestamp, true),
+          double_space?: Keyword.get(params, :double_space, false),
+          strip_html?: Keyword.get(params, :strip_html, false),
           ignore: Keyword.get_values(params, :ignore),
           path: Keyword.get(params, :path),
           output: Keyword.get(params, :output, :stdio),
@@ -109,6 +115,12 @@ defmodule Bookmarker.CLI do
                             Valid startegies are [#{Runner.valid_sort_strategies() |> Enum.join(", ")}]
       --no-timestamp        Prevent appending of build datetime after description.
                             Default: use timestamp
+      -D, --double-space    Put a blank line between each bookmark/heading.
+                            Default: single-spaced
+      -H, --strip-html      Replace HTML tags in bookmark/folder names with parens
+                            (e.g. "<b>text</b>" becomes "(text)") so raw tags don't
+                            break rendering in tools like Obsidian.
+                            Default: false
       -i, --ignore          Ignore folders. You may set this multiple times.
       -p, --path            Restrict to folder. You may set this one time only.
       -o, --output          Save rendered markdown to a file.
